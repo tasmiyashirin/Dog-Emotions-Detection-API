@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dog Emotion Detection</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #000000;
+			text-align: center;
+			margin-top: 50px;
+		}
+		h1 {
+			color: #500d5b;
+			font-size: 36px;
+			margin-bottom: 50px;
+		}
+		form {
+			display: inline-block;
+			background-color: #fff;
+			border: 2px solid #a322c6;
+			padding: 20px;
+			margin-bottom: 50px;
+			box-shadow: 0 2px 4px rgba(97, 155, 243, 0.557);
+			border-radius: 10px;
+		}
+		input[type="file"] {
+			display: block;
+			margin: 20px auto;
+			font-size: 18px;
+			padding: 10px 20px;
+			border: 2px solid #a83ba8;
+			border-radius: 5px;
+			background-color: #fff;
+			box-shadow: 0 2px 4px rgba(121, 143, 243, 0.687);
+		}
+		input[type="submit"] {
+			display: block;
+			margin: 20px auto;
+			font-size: 18px;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 5px;
+			background-color: #333;
+			color: #fff;
+			cursor: pointer;
+			transition: background-color 0.2s ease;
+		}
+		input[type="submit"]:hover {
+			background-color: #555;
+		}
+		#result {
+			font-size: 24px;
+			color: #ffffff;
+			font-weight: bold;
+			margin-top: 50px;
+		}
+	</style>
+</head>
+<body>
+	<h1>Dog Emotion Detection</h1>
+	<form action="/predict" method="post" enctype="multipart/form-data">
+		<input type="file" name="file">
+		<button input type="submit" value="Upload">Predict Emotion</button>
+	</form>
+	<div id="result"></div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('form').submit(function(e) {
+				e.preventDefault();
+				var formData = new FormData($('form')[0]);
+				$.ajax({
+					url: 'http://127.0.0.1:5000/predict',
+					type: 'POST',
+					data: formData,
+					processData: false,
+					contentType: false,
+					success: function(response) {
+						$('#result').text('Predicted emotion: ' + response.result);
+					},
+					error: function(error) {
+						console.log(error);
+					}
+				});
+			});
+		});
+	</script>
+</body>
+</html>
